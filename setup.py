@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='',
+    name='ldap_sync_service',
     version='1.0',
     py_modules=['ldap_sync_service'],
     install_requires=['pyad'],
