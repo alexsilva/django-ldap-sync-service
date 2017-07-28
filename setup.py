@@ -4,7 +4,7 @@ setup(
     name='ldap-sync-service',
     version='1.0',
     py_modules=['ldap_sync_service'],
-    install_requires=['pyad'],
+    install_requires=['ldap3'],
     dependency_links=[
         'https://github.com/alexsilva/django-ldap-sync.git@master'
     ],
