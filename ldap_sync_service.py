@@ -1,4 +1,6 @@
-from ldap3 import Server, Connection, ALL, NTLM
+import json
+
+from ldap3 import Server, Connection, ALL, NTLM, SUBTREE
 
 from ldap_sync import service
 
@@ -27,22 +29,29 @@ class LdapSearchService(service.LdapSearch):
 
     def users(self, sbase, sfilter, attributes):
         """Search for users"""
-        items = []
-        if self.connection.search(search_base=sbase,
-                                  search_filter=sfilter,
-                                  attributes=attributes):
-            for entry in self.connection.entries:
-                attrs = {}
-                for attr in attributes:
-                    attrs[attr] = getattr(entry, attr)
-                data = {
-                    "attributes": attrs,
-                    "json": entry.entry_to_json()
-                }
-                items.append(data)
-        else:
-            raise service.LdapSearchException("empty search")
-        return items
+        entry_generator = self.connection.extend.standard.paged_search(
+            search_base=sbase,
+            search_filter=sfilter,
+            attributes=attributes,
+            search_scope=SUBTREE,
+            paged_size=5,
+            generator=True)
+        storage = []
+        total_entries = 0
+        for entry in entry_generator:
+            total_entries += 1
+            attributes = entry['attributes']
+            attrs = dict(attributes)
+            data = {
+                "attributes": attrs,
+                "json": json.dumps(attrs)
+            }
+            storage.append(data)
+            if total_entries % 100 == 0:
+                yield storage
+                storage = []
+        yield storage
+        raise StopIteration
 
     def groups(self, sbase, sfilter, attributes):
         """Search for groups"""
