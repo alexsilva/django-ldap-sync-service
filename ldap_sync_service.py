@@ -40,7 +40,7 @@ class LdapSearchService(service.LdapSearch):
         total_entries = 0
         for entry in entry_generator:
             total_entries += 1
-            attributes = entry['attributes']
+            attributes = entry.setdefault('attributes', {})
             attrs = dict(attributes)
             data = {
                 "attributes": attrs,
