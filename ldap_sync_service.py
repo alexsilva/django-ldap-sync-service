@@ -41,12 +41,8 @@ class LdapSearchService(service.LdapSearch):
         for entry in entry_generator:
             total_entries += 1
             attributes = entry.setdefault('attributes', {})
-            attrs = dict(attributes)
-            data = {
-                "attributes": attrs,
-                "json": json.dumps(attrs)
-            }
-            storage.append(data)
+            attrs = dict(attributes)  # copy
+            storage.append(attrs)
             if total_entries % 100 == 0:
                 yield storage
                 storage = []
