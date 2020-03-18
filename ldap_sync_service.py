@@ -47,7 +47,6 @@ class LdapSearchService(service.LdapSearch):
                 yield storage
                 storage = []
         yield storage
-        raise StopIteration
 
     def groups(self, sbase, sfilter, attributes):
         """Search for groups"""
