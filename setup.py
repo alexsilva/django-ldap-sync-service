@@ -1,8 +1,8 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='ldap-sync-service',
-    version='3.1.1',
+    version='4.0.0',
     py_modules=['ldap_sync_service'],
     install_requires=['ldap3'],
     dependency_links=[
