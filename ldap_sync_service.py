@@ -12,10 +12,10 @@ class LdapSearchBindException(service.LdapSearchException):
 class LdapSearchService(service.LdapSearch):
     """Implements the service interface"""
 
-    def __init__(self, uri):
+    def __init__(self, uri, **options):
         super(LdapSearchService, self).__init__(uri)
-
-        self.server = Server(uri, get_info=ALL)
+        options.setdefault('get_info', ALL)
+        self.server = Server(uri, **options)
         self._conn = self.username = self.password = None
 
     @property
