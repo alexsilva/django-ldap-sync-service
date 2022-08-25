@@ -18,13 +18,17 @@ class LdapSearchService(service.LdapSearch):
         self.server = Server(uri, **options)
         self._conn = self.username = self.password = None
 
+    def get_connection(self, **options):
+        """Initiates a new connection to the server"""
+        options.setdefault('authentication', NTLM)
+        options.setdefault('user', self.username)
+        options.setdefault('password', self.password)
+        return Connection(self.server, **options)
+
     @property
     def connection(self):
         if self._conn is None:
-            self._conn = Connection(self.server,
-                                    user=self.username,
-                                    password=self.password,
-                                    authentication=NTLM)
+            self._conn = self.get_connection()
         return self._conn
 
     def users(self, sbase, sfilter, attributes):
