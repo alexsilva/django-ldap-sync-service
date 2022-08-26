@@ -67,6 +67,7 @@ class LdapSearchService(service.LdapSearch):
         self.password = password
 
         conn = self.connection
-
-        if not conn.bind():
+        result = conn.bind()
+        if not result:
             raise LdapSearchBindException('error in bind {0.result}'.format(conn))
+        return result
