@@ -31,6 +31,11 @@ class LdapSearchService(service.LdapSearch):
             self._conn = self.get_connection()
         return self._conn
 
+    @connection.setter
+    def connection(self, conn):
+        """Change current connection"""
+        self._conn = conn
+
     def users(self, sbase, sfilter, attributes):
         """Search for users"""
         entry_generator = self.connection.extend.standard.paged_search(
