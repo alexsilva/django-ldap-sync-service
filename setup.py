@@ -8,7 +8,7 @@ if sys.platform.startswith('linux'):
 
 setup(
     name='ldap-sync-service',
-    version='4.0.0',
+    version='4.1.0',
     py_modules=['ldap_sync_service'],
     install_requires=install_requires,
     dependency_links=[
